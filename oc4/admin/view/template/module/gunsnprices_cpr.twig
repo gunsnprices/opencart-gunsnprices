@@ -1,0 +1,334 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="float-end">
+        <button type="submit" form="form-module" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa-solid fa-save"></i></button>
+        <a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ol class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header"><i class="fa-solid fa-pencil"></i> {{ text_edit }}</div>
+      <div class="card-body">
+        <form id="form-module" action="{{ save }}" method="post" data-oc-toggle="ajax">
+          <fieldset>
+            <legend>{{ text_general }}</legend>
+            <div class="row mb-3">
+              <label for="input-store" class="col-sm-2 col-form-label">{{ entry_store }}</label>
+              <div class="col-sm-10">
+                <div class="input-group">
+                  <select id="input-store" class="form-select" onchange="location = this.value;">
+                    {% for store in stores %}
+                      <option value="{{ store.href }}"{% if store.store_id == store_id %} selected{% endif %}>{{ store.name }}</option>
+                    {% endfor %}
+                  </select>
+                  {% if store_id and store_own %}
+                    <button type="button" id="button-reset" data-url="{{ reset }}" class="btn btn-outline-secondary">{{ button_reset }}</button>
+                  {% endif %}
+                </div>
+                {% if store_id %}
+                  <div class="form-text">{% if store_own %}{{ text_store_own }}{% else %}{{ text_store_inherit }}{% endif %}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label">{{ entry_status }}</label>
+              <div class="col-sm-10">
+                <div class="form-check form-switch form-switch-lg">
+                  <input type="hidden" name="module_gunsnprices_cpr_status" value="0"/>
+                  <input type="checkbox" name="module_gunsnprices_cpr_status" value="1" id="input-status" class="form-check-input"{% if module_gunsnprices_cpr_status %} checked{% endif %}/>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>{{ text_cost }}</legend>
+            <p class="text-body-secondary">{{ text_cost_help }}</p>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label">{{ entry_product }}</label>
+              <div class="col-sm-10">
+                <div class="form-check form-switch form-switch-lg">
+                  <input type="hidden" name="module_gunsnprices_cpr_product" value="0"/>
+                  <input type="checkbox" name="module_gunsnprices_cpr_product" value="1" id="input-product" class="form-check-input"{% if module_gunsnprices_cpr_product %} checked{% endif %}/>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label">{{ entry_list }}</label>
+              <div class="col-sm-10">
+                <div class="form-check form-switch form-switch-lg">
+                  <input type="hidden" name="module_gunsnprices_cpr_list" value="0"/>
+                  <input type="checkbox" name="module_gunsnprices_cpr_list" value="1" id="input-list" class="form-check-input"{% if module_gunsnprices_cpr_list %} checked{% endif %}/>
+                </div>
+                <div class="form-text">{{ help_list }}</div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-position" class="col-sm-2 col-form-label">{{ entry_position }}</label>
+              <div class="col-sm-10">
+                <select name="module_gunsnprices_cpr_position" id="input-position" class="form-select">
+                  <option value="inline"{% if module_gunsnprices_cpr_position == 'inline' %} selected{% endif %}>{{ text_position_inline }}</option>
+                  <option value="below"{% if module_gunsnprices_cpr_position == 'below' %} selected{% endif %}>{{ text_position_below }}</option>
+                  <option value="none"{% if module_gunsnprices_cpr_position == 'none' %} selected{% endif %}>{{ text_position_none }}</option>
+                </select>
+                <div class="form-text">{{ help_position }}</div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-format" class="col-sm-2 col-form-label">{{ entry_format }}</label>
+              <div class="col-sm-10">
+                <select name="module_gunsnprices_cpr_format" id="input-format" class="form-select">
+                  <option value="short"{% if module_gunsnprices_cpr_format == 'short' %} selected{% endif %}>{{ text_format_short }}</option>
+                  <option value="long"{% if module_gunsnprices_cpr_format == 'long' %} selected{% endif %}>{{ text_format_long }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-decimals" class="col-sm-2 col-form-label">{{ entry_decimals }}</label>
+              <div class="col-sm-10">
+                <select name="module_gunsnprices_cpr_decimals" id="input-decimals" class="form-select">
+                  <option value="currency"{% if module_gunsnprices_cpr_decimals == 'currency' %} selected{% endif %}>{{ text_decimals_currency }}</option>
+                  <option value="extra"{% if module_gunsnprices_cpr_decimals == 'extra' %} selected{% endif %}>{{ text_decimals_extra }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-source" class="col-sm-2 col-form-label">{{ entry_source }}</label>
+              <div class="col-sm-10">
+                <select name="module_gunsnprices_cpr_source" id="input-source" class="form-select">
+                  <option value="name"{% if module_gunsnprices_cpr_source == 'name' %} selected{% endif %}>{{ text_source_name }}</option>
+                  <option value="attribute"{% if module_gunsnprices_cpr_source == 'attribute' %} selected{% endif %}>{{ text_source_attribute }}</option>
+                  <option value="option"{% if module_gunsnprices_cpr_source == 'option' %} selected{% endif %}>{{ text_source_option }}</option>
+                </select>
+                <div class="form-text">{{ help_source }}</div>
+              </div>
+            </div>
+            <div class="row mb-3" id="row-attribute">
+              <label for="input-attribute-id" class="col-sm-2 col-form-label">{{ entry_attribute }}</label>
+              <div class="col-sm-10">
+                <select name="module_gunsnprices_cpr_attribute_id" id="input-attribute-id" class="form-select">
+                  <option value="0">{{ text_select }}</option>
+                  {% for attribute in attributes %}
+                    <option value="{{ attribute.attribute_id }}"{% if attribute.attribute_id == module_gunsnprices_cpr_attribute_id %} selected{% endif %}>{{ attribute.name }}</option>
+                  {% endfor %}
+                </select>
+                {% if not attributes %}<div class="form-text">{{ text_none }}</div>{% endif %}
+                <div id="error-attribute-id" class="invalid-feedback"></div>
+              </div>
+            </div>
+            <div class="row mb-3" id="row-option">
+              <label for="input-option-id" class="col-sm-2 col-form-label">{{ entry_option }}</label>
+              <div class="col-sm-10">
+                <select name="module_gunsnprices_cpr_option_id" id="input-option-id" class="form-select">
+                  <option value="0">{{ text_select }}</option>
+                  {% for option in options %}
+                    <option value="{{ option.option_id }}"{% if option.option_id == module_gunsnprices_cpr_option_id %} selected{% endif %}>{{ option.name }}</option>
+                  {% endfor %}
+                </select>
+                {% if not options %}<div class="form-text">{{ text_none }}</div>{% endif %}
+                <div id="error-option-id" class="invalid-feedback"></div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-ammo-mode" class="col-sm-2 col-form-label">{{ entry_ammo_mode }}</label>
+              <div class="col-sm-10">
+                <select name="module_gunsnprices_cpr_ammo_mode" id="input-ammo-mode" class="form-select">
+                  <option value="guess"{% if module_gunsnprices_cpr_ammo_mode == 'guess' %} selected{% endif %}>{{ text_mode_guess }}</option>
+                  <option value="category"{% if module_gunsnprices_cpr_ammo_mode == 'category' %} selected{% endif %}>{{ text_mode_category }}</option>
+                </select>
+                <div class="form-text">{{ help_ammo_mode }}</div>
+              </div>
+            </div>
+            <div class="row mb-3" id="row-ammo-category">
+              <label class="col-sm-2 col-form-label">{{ entry_ammo_category }}</label>
+              <div class="col-sm-10">
+                <div id="input-ammo-category" class="form-control p-0" style="height: 160px; overflow: auto;">
+                  <table class="table table-sm m-0">
+                    <tbody>
+                      {% for category in categories %}
+                        <tr>
+                          <td>
+                            <div class="form-check">
+                              <input type="checkbox" name="module_gunsnprices_cpr_ammo_category[]" value="{{ category.category_id }}" id="input-ammo-category-{{ category.category_id }}" class="form-check-input"{% if category.category_id in module_gunsnprices_cpr_ammo_category %} checked{% endif %}/> <label for="input-ammo-category-{{ category.category_id }}" class="form-check-label">{{ category.name }}</label>
+                            </div>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <div id="error-ammo-category" class="invalid-feedback"></div>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>{{ text_specs }}</legend>
+            <p class="text-body-secondary">{{ text_specs_help }}</p>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label">{{ entry_specs }}</label>
+              <div class="col-sm-10">
+                <div class="form-check form-switch form-switch-lg">
+                  <input type="hidden" name="module_gunsnprices_cpr_specs" value="0"/>
+                  <input type="checkbox" name="module_gunsnprices_cpr_specs" value="1" id="input-specs" class="form-check-input"{% if module_gunsnprices_cpr_specs %} checked{% endif %}/>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-specs-position" class="col-sm-2 col-form-label">{{ entry_specs_position }}</label>
+              <div class="col-sm-10">
+                <select name="module_gunsnprices_cpr_specs_position" id="input-specs-position" class="form-select">
+                  <option value="tab"{% if module_gunsnprices_cpr_specs_position == 'tab' %} selected{% endif %}>{{ text_specs_tab }}</option>
+                  <option value="description"{% if module_gunsnprices_cpr_specs_position == 'description' %} selected{% endif %}>{{ text_specs_description }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label">{{ entry_specs_fields }}</label>
+              <div class="col-sm-10">
+                {% for field in spec_fields %}
+                  <div class="form-check form-check-inline">
+                    <input type="checkbox" name="module_gunsnprices_cpr_specs_fields[]" value="{{ field.value }}" id="input-specs-field-{{ field.value }}" class="form-check-input"{% if field.value in module_gunsnprices_cpr_specs_fields %} checked{% endif %}/> <label for="input-specs-field-{{ field.value }}" class="form-check-label">{{ field.text }}</label>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-firearm-mode" class="col-sm-2 col-form-label">{{ entry_firearm_mode }}</label>
+              <div class="col-sm-10">
+                <select name="module_gunsnprices_cpr_firearm_mode" id="input-firearm-mode" class="form-select">
+                  <option value="guess"{% if module_gunsnprices_cpr_firearm_mode == 'guess' %} selected{% endif %}>{{ text_mode_guess }}</option>
+                  <option value="category"{% if module_gunsnprices_cpr_firearm_mode == 'category' %} selected{% endif %}>{{ text_mode_category }}</option>
+                </select>
+                <div class="form-text">{{ help_firearm_mode }}</div>
+              </div>
+            </div>
+            <div class="row mb-3" id="row-firearm-category">
+              <label class="col-sm-2 col-form-label">{{ entry_firearm_category }}</label>
+              <div class="col-sm-10">
+                <div id="input-firearm-category" class="form-control p-0" style="height: 160px; overflow: auto;">
+                  <table class="table table-sm m-0">
+                    <tbody>
+                      {% for category in categories %}
+                        <tr>
+                          <td>
+                            <div class="form-check">
+                              <input type="checkbox" name="module_gunsnprices_cpr_firearm_category[]" value="{{ category.category_id }}" id="input-firearm-category-{{ category.category_id }}" class="form-check-input"{% if category.category_id in module_gunsnprices_cpr_firearm_category %} checked{% endif %}/> <label for="input-firearm-category-{{ category.category_id }}" class="form-check-label">{{ category.name }}</label>
+                            </div>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <div id="error-firearm-category" class="invalid-feedback"></div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label">{{ entry_caliber_links }}</label>
+              <div class="col-sm-10">
+                <div class="form-check form-switch form-switch-lg">
+                  <input type="hidden" name="module_gunsnprices_cpr_caliber_links" value="0"/>
+                  <input type="checkbox" name="module_gunsnprices_cpr_caliber_links" value="1" id="input-caliber-links" class="form-check-input"{% if module_gunsnprices_cpr_caliber_links %} checked{% endif %}/>
+                </div>
+                <div class="form-text">{{ help_caliber_links }}</div>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+        <fieldset>
+          <legend>{{ text_test }}</legend>
+          <p class="text-body-secondary">{{ text_test_help }}</p>
+          <div class="row mb-3">
+            <label for="input-test-name" class="col-sm-2 col-form-label">{{ entry_test_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" id="input-test-name" value="Federal American Eagle 9mm Luger 115gr FMJ 50 Rounds" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="input-test-price" class="col-sm-2 col-form-label">{{ entry_test_price }}</label>
+            <div class="col-sm-10">
+              <div class="input-group">
+                <input type="text" id="input-test-price" value="18.99" class="form-control"/>
+                <button type="button" id="button-test" data-url="{{ test }}" class="btn btn-primary">{{ button_test }}</button>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-10 offset-sm-2" id="test-result"></div>
+          </div>
+        </fieldset>
+        <p class="text-body-secondary small mb-0">{{ text_credit }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('#input-source').on('change', function() {
+    $('#row-attribute').toggle(this.value == 'attribute');
+    $('#row-option').toggle(this.value == 'option');
+}).trigger('change');
+
+$('#input-ammo-mode').on('change', function() {
+    $('#row-ammo-category').toggle(this.value == 'category');
+}).trigger('change');
+
+$('#input-firearm-mode').on('change', function() {
+    $('#row-firearm-category').toggle(this.value == 'category');
+}).trigger('change');
+
+$('#button-test').on('click', function() {
+    var button = this;
+
+    $.ajax({
+        url: $(button).attr('data-url'),
+        type: 'post',
+        data: {name: $('#input-test-name').val(), price: $('#input-test-price').val()},
+        dataType: 'json',
+        beforeSend: function() {
+            $(button).prop('disabled', true);
+        },
+        complete: function() {
+            $(button).prop('disabled', false);
+        },
+        success: function(json) {
+            if (json['error']) {
+                $('#test-result').html('<div class="alert alert-danger mb-0">' + json['error'] + '</div>');
+            }
+
+            if (json['html']) {
+                $('#test-result').html(json['html']);
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+});
+
+$('#button-reset').on('click', function() {
+    var button = this;
+
+    $.ajax({
+        url: $(button).attr('data-url'),
+        type: 'post',
+        dataType: 'json',
+        success: function(json) {
+            if (json['error']) {
+                $('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+            }
+
+            if (json['redirect']) {
+                location = json['redirect'];
+            }
+        }
+    });
+});
+//--></script>
+{{ footer }}

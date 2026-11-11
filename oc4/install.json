@@ -1,0 +1,7 @@
+{
+  "name": "Ammo Cost per Round & Firearm Specs",
+  "description": "Shows the cost per round of ammunition next to the price and a caliber, capacity and barrel length block on firearm pages. Reads them from product names. By GunsNPrices.",
+  "version": "1.0.0",
+  "author": "GunsNPrices",
+  "link": "https://gunsnprices.com"
+}
